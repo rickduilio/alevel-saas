@@ -38,6 +38,7 @@ const NAV_ITEMS = [
   { href: "/tarefas", label: "Tarefas", icon: CheckSquare },
   { href: "/contatos", label: "Contatos", icon: Users },
   { href: "/formularios", label: "Formulários", icon: FileText },
+  { href: "/formulario/lote", label: "Lote", icon: FileText },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
