@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { ROLE_LABELS, FILIAIS } from "@/lib/constants";
+import NotificationBell from "@/components/app/notification-bell";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -174,6 +175,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <Menu className="h-5 w-5" />
           </button>
           <span className="text-sm font-medium text-cyan-400">ALevel</span>
+          <div className="ml-auto">
+            <NotificationBell />
+          </div>
         </div>
 
         {children}
