@@ -9,12 +9,14 @@ import {
 } from "@/components/ui/dialog";
 import {
   Plus, Globe, Lock, CheckCircle, XCircle, ExternalLink,
-  Copy, Settings,
+  Copy, Settings, Pencil,
 } from "lucide-react";
 import type { CustomForm } from "@/types/database";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export default function FormulariosPage() {
+  const router = useRouter();
   const supabase = createClient();
   const [forms, setForms] = useState<CustomForm[]>([]);
   const [newFormOpen, setNewFormOpen] = useState(false);
@@ -81,6 +83,15 @@ export default function FormulariosPage() {
                   title="Copiar link"
                 >
                   <Copy className="h-3.5 w-3.5" />
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="text-slate-400 h-8"
+                  onClick={() => router.push(`/formularios/${form.id}/editar`)}
+                  title="Editar campos"
+                >
+                  <Pencil className="h-3.5 w-3.5" />
                 </Button>
                 <Button
                   size="sm"
