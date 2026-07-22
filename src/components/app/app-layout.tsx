@@ -16,6 +16,8 @@ import {
   LogOut,
   ChevronLeft,
   Menu,
+  Settings,
+  Upload,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -38,7 +40,8 @@ const NAV_ITEMS = [
   { href: "/tarefas", label: "Tarefas", icon: CheckSquare },
   { href: "/contatos", label: "Contatos", icon: Users },
   { href: "/formularios", label: "Formulários", icon: FileText },
-  { href: "/formulario/lote", label: "Lote", icon: FileText },
+  { href: "/formulario/lote", label: "Lote", icon: Upload },
+  { href: "/config", label: "Config", icon: Settings },
 ];
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
