@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
+import FileUpload, { AttachmentList } from "@/components/app/file-upload";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -407,20 +408,29 @@ export function DealDetailDialog({
           </TabsContent>
 
           {/* ─── ATTACHMENTS TAB ─── */}
-          <TabsContent value="attachments" className="mt-4">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+          <TabsContent value="attachments" className="mt-4 space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <FileUpload entityType="payment" entityId={deal.id} attachmentType="comprovante" onUploaded={() => {}} />
+              <FileUpload entityType="payment" entityId={deal.id} attachmentType="orcamento" onUploaded={() => {}} />
+              <FileUpload entityType="payment" entityId={deal.id} attachmentType="boleto" onUploaded={() => {}} />
+              <FileUpload entityType="payment" entityId={deal.id} attachmentType="reembolso" onUploaded={() => {}} />
+            </div>
+            <div className="space-y-2">
+              <h4 className="text-sm text-slate-400">Anexos ({attachments.length})</h4>
               {attachments.length === 0 && (
-                <p className="text-sm text-slate-500 col-span-full text-center py-8">
-                  Nenhum anexo
+                <p className="text-sm text-slate-500 text-center py-4">
+                  Nenhum anexo ainda
                 </p>
               )}
               {attachments.map((att) => (
                 <div
                   key={att.id}
-                  className="p-3 bg-slate-800/50 rounded-lg border border-slate-700"
+                  className="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700"
                 >
-                  <p className="text-sm text-slate-200 truncate">{att.filename}</p>
-                  <p className="text-xs text-slate-500 mt-1">{att.type}</p>
+                  <a href={att.file_url} target="_blank" className="flex-1 min-w-0">
+                    <p className="text-sm text-cyan-400 hover:underline truncate">{att.filename}</p>
+                    <p className="text-xs text-slate-500">{att.type}</p>
+                  </a>
                 </div>
               ))}
             </div>
