@@ -22,7 +22,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Plus, GripVertical, ArrowUpRight } from "lucide-react";
+import { Plus, GripVertical, ArrowUpRight, Download } from "lucide-react";
+import { exportToCSV } from "@/lib/export-csv";
 import { cn } from "@/lib/utils";
 import { PAYMENT_STAGES, PAYMENT_STAGE_ORDER } from "@/lib/constants";
 import { DealDetailDialog } from "@/components/app/deal-detail";
@@ -536,13 +537,37 @@ export default function PaymentsPage() {
             {formatCurrency(payments.reduce((s, p) => s + Number(p.amount), 0))}
           </p>
         </div>
-        <Button
-          onClick={() => setNewDealOpen(true)}
-          className="bg-cyan-600 hover:bg-cyan-700"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Novo Pagamento
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={() => exportToCSV(
+              payments.map(p => ({
+                Titulo: p.title,
+                Valor: p.amount,
+                Favorecido: p.favored_name,
+                CPF_CNPJ: p.favored_document,
+                Banco: p.favored_bank,
+                Vencimento: p.due_date,
+                Estagio: PAYMENT_STAGES[p.stage]?.label,
+                Filial: p.filial,
+                Tipo: p.payment_type,
+                Aprovado: p.approved ? "Sim" : "Não",
+              })),
+              `pagamentos-${new Date().toISOString().split("T")[0]}`
+            )}
+            variant="outline"
+            className="border-slate-700 text-slate-300"
+          >
+            <Download className="h-4 w-4 mr-2" />
+            CSV
+          </Button>
+          <Button
+            onClick={() => setNewDealOpen(true)}
+            className="bg-cyan-600 hover:bg-cyan-700"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Novo Pagamento
+          </Button>
+        </div>
       </div>
 
       <DndContext
