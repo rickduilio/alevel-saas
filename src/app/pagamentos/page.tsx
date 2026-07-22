@@ -25,6 +25,7 @@ import {
 import { Plus, GripVertical, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PAYMENT_STAGES, PAYMENT_STAGE_ORDER } from "@/lib/constants";
+import { DealDetailDialog } from "@/components/app/deal-detail";
 import type { Payment, PaymentStage, Profile } from "@/types/database";
 
 function formatCurrency(value: number) {
@@ -432,6 +433,7 @@ export default function PaymentsPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [newDealOpen, setNewDealOpen] = useState(false);
+  const [selectedDeal, setSelectedDeal] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } })
@@ -554,7 +556,7 @@ export default function PaymentsPage() {
               key={stage}
               stage={stage}
               payments={getPaymentsByStage(stage)}
-              onOpenDeal={(deal) => {}}
+              onOpenDeal={(deal) => setSelectedDeal(deal.id)}
               isOverdue={isOverdue(stage)}
             />
           ))}
@@ -575,6 +577,15 @@ export default function PaymentsPage() {
         open={newDealOpen}
         onOpenChange={setNewDealOpen}
         onCreated={loadPayments}
+      />
+
+      <DealDetailDialog
+        dealId={selectedDeal}
+        open={!!selectedDeal}
+        onOpenChange={(open) => {
+          if (!open) setSelectedDeal(null);
+        }}
+        onUpdated={loadPayments}
       />
     </div>
   );
