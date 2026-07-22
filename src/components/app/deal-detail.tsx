@@ -27,8 +27,9 @@ import {
   Building2,
   Tag,
 } from "lucide-react";
-import type { Payment, TimelineEntry, Attachment, Profile } from "@/types/database";
+import type { Payment, TimelineEntry, Attachment, Profile, PaymentStage } from "@/types/database";
 import { PAYMENT_STAGES, PAYMENT_TYPES, ACCOUNT_TYPES, FILIAIS } from "@/lib/constants";
+import { calculateAutoStage } from "@/lib/auto-stage";
 import { cn } from "@/lib/utils";
 
 function formatCurrency(value: number) {
@@ -198,6 +199,17 @@ export function DealDetailDialog({
               </DialogTitle>
               <p className="text-sm text-slate-400 mt-1">
                 {PAYMENT_STAGES[deal.stage]?.label} · {deal.favored_name}
+                {(() => {
+                  const autoStage = calculateAutoStage(deal.due_date);
+                  if (autoStage !== deal.stage && !['paid','completed','cancelled','authorized','scheduled'].includes(deal.stage)) {
+                    return (
+                      <span className="text-xs text-yellow-400 ml-2">
+                        (calculado: {PAYMENT_STAGES[autoStage]?.label})
+                      </span>
+                    );
+                  }
+                  return null;
+                })()}
               </p>
             </div>
             <div className="flex items-center gap-2">
